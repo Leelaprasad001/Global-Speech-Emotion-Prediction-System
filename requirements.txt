@@ -1,0 +1,14 @@
+Flask
+Flask-Cors
+gunicorn
+uwsgi
+requests
+numpy
+pandas
+scikit-learn
+nltk
+joblib
+emot
+# stopwords
+
+# -e .

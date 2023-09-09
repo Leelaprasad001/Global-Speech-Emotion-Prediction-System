@@ -1,0 +1,21 @@
+.res{
+    margin-top: -5rem;
+}
+input[type="radio"] {
+    width: 1rem; 
+    height: 1rem; 
+}
+.fm input{
+    padding:1rem;
+}
+.fn{
+    font-size: 1.5rem;
+}
+.custom-textarea {
+    border: 1.5px solid #333; 
+    border-radius: 5px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+audio{
+    margin-left:27rem;
+}
