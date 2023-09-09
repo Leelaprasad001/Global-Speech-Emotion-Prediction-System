@@ -87,13 +87,13 @@ def submit_text():
     model = pickle.load(open('./your_model.pkl', 'rb'))
     result = model.predict(x)
     if result[0]==0:
-        return render_template('result.html', text = "JOY")
+        return render_template('index.html', text = "JOY")
     elif result[0]==1:
-        return render_template('result.html', text = "NETURAL")
+        return render_template('index.html', text = "NETURAL")
     elif result[0]==2:
-        return render_template('result.html', text = "OPTIMISM")
+        return render_template('index.html', text = "OPTIMISM")
     else:
-        return render_template('result.html', text = "UPSET")
+        return render_template('index.html', text = "UPSET")
     
 
 
