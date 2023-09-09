@@ -30,7 +30,10 @@
             <div class="col-md-9 col-xxl-5 text-md-start text-center py-6 pt-2">
               <h1 class="fs-4 fs-md-5 fs-xxl-4" data-zanim-xs='{"delay":0.3}' data-zanim-trigger="scroll">Global Speech Emotion Prediction System</h1>
               <p class="fs-1" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">Explore the diverse world of international diplomacy through speech analysis. Predict emotions in government representatives' speeches across nations and understand the state of affairs with our Global Speech Emotion Prediction Project.</p>
-              <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-md-start mt-5 h-100" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll"><a class="btn btn-sm btn-primary me-1 p-3" href="#result" role="button">Try Now</a></div>
+              <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-md-start mt-5 h-100" data-zanim-xs='{"delay":0.5}' data-zanim-trigger="scroll">
+                <a class="btn btn-sm btn-primary me-1 p-3" href="#result" role="button">Try Now</a>&nbsp&nbsp&nbsp
+                <a class="btn btn-sm btn-primary me-1 p-3" href="#res1" role="button">View Results</a>
+            </div>
             </div>
           </div>
         </div>
@@ -38,20 +41,12 @@
 
 
       <section class="py-7 py-lg-10" id="result">
-        <div class="container res">
-            <div class="row align-items-center text-center">
-                <h2>Please select the input format</h2>
-                <form class="fm">
-                    <input type="radio" id="textInput" name="inputFormat" value="text" onclick="toggleDiv('textDiv')" ><span class="fn"> Text &nbsp&nbsp&nbsp<span>
-                    <input type="radio" id="audioInput" name="inputFormat" value="audio" onclick="toggleDiv('audioDiv')" ><span class="fn"> Audio </span>
-                </form>
-            </div>
-        </div>
-      
-        <div class="container" id="textDiv" style="display: none;">
+        
+        <div class="container" id="textDiv">
           <div class="row mb-4">
               <form method="POST" action="/submit_text" style="display: inline-block;">
-                  <div class="container">
+                  <div class="container text-center">
+                    <h2>Please Enter The Input </h2>
                       <div class="col-md-8 mx-auto text-center text-md-start p-0 p-md-5 pb-3">
                           <textarea class="form-control custom-textarea" id="exampleTextarea" name="text" rows="13"></textarea>
                       </div>
@@ -63,93 +58,16 @@
           </div>
       </div>
       
-      <!-- <div class="container" id="audioDiv" style="display: none;">
-        <div class="row mb-4">
-            <form method="POST" action="/submit_audio" enctype="multipart/form-data" style="display: inline-block;">
-                <div class="container">
-                    <div class="col-md-8 mx-auto text-center text-md-start p-0 p-md-5 pb-3">
-                        <img src="{{ url_for('static', filename='/img/illustration/audio.jpg') }}" alt="Tailored" />
-                    </div>
-                </div>
-                <div class="text-center">
-                    <button type="button" id="recordButton" class="btn btn-primary mt-3">Record</button>
-                    <button type="button" id="stopButton" class="btn btn-danger mt-3">Stop</button>
-                    <button type="submit" id="submitButton" class="btn btn-success mt-3">Submit</button>
-                </div>
-            </form>
+      <section class="py-7 py-lg-10" id="res1">
+        <div class="container res">
+            <div class="row align-items-center text-center">
+                <h1>{{ text }}</h1>
+            </div>
         </div>
-    </div> -->
-    
       </section>
     
     </main>
     
-    <!--    JavaScripts-->
-      <script>
-        function toggleDiv(divId) {
-            var div = document.getElementById(divId);
-            var textInput = document.getElementById("textInput");
-            var audioInput = document.getElementById("audioInput");
-
-           // Hide all divs except the one being opened
-           if (divId === "textDiv") {
-              div.style.display = textInput.checked ? "block" : "none";
-              document.getElementById("audioDiv").style.display = "none";
-          } else if (divId === "audioDiv") {
-              div.style.display = audioInput.checked ? "block" : "none";
-              document.getElementById("textDiv").style.display = "none";
-          }
-        }
-
-        let mediaRecorder;
-        let audioChunks = [];
-        
-        // Access the user's microphone and start recording when the "Record" button is clicked
-        document.getElementById('recordButton').addEventListener('click', () => {
-            navigator.mediaDevices.getUserMedia({ audio: true })
-            .then((stream) => {
-                mediaRecorder = new MediaRecorder(stream);
-                mediaRecorder.ondataavailable = (e) => {
-                    if (e.data.size > 0) {
-                        audioChunks.push(e.data);
-                    }
-                };
-                mediaRecorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                    const audioUrl = URL.createObjectURL(audioBlob);
-                    document.getElementById('audioDiv').innerHTML += '<audio controls src="' + audioUrl + '"></audio>';
-                    const audioFile = new File([audioBlob], 'recorded_audio.wav');
-                    const formData = new FormData();
-                    formData.append('audio', audioFile);
-                    $.ajax({
-                        type: 'POST',
-                        url: '/submit_audio',
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        success: (data) => {
-                            document.getElementById('exampleTextarea').value = data.text;
-                        },
-                        error: (error) => {
-                            console.error(error);
-                        }
-                    });
-                };
-                mediaRecorder.start();
-            })
-            .catch((error) => {
-                console.error('Error accessing microphone:', error);
-            });
-        });
-
-        // Stop recording when the "Stop" button is clicked
-        document.getElementById('stopButton').addEventListener('click', () => {
-            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-                mediaRecorder.stop();
-            }
-        });
-
-    </script>
     <script src="{{ url_for('static', filename='/vendors/popper/popper.min.js') }}" ></script>
     <script src="{{ url_for('static', filename='/vendors/bootstrap/bootstrap.min.js') }}" ></script>
     <script src="{{ url_for('static', filename='/vendors/anchorjs/anchor.min.js') }}" ></script>
