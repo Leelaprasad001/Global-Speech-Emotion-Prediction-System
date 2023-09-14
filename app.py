@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, url_for
 from emot.emo_unicode import UNICODE_EMOJI
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
@@ -68,34 +68,35 @@ def index():
 
 @app.route('/', methods=['GET','POST'])
 def submit_text():
-    text = request.form.get('text')
-    text = text.lower()
-    text = convert_emojis(text)
-    text = tokenize(text)
-    text = remove_punct(text)
-    text = whites(text)
-    text = re_stop(text)
-    text = remove_num(text)
-    text = remove_roman(text)
-    text = remove_redun(text)
-    text = stemm(text)
-    text = ' '.join(text)
-    text = [text]
-    tfidf_filename = "./tfidf_vectorizer.pkl"
-    loaded_tfidf = joblib.load(tfidf_filename)
-    x = loaded_tfidf.transform(text).toarray()
-    model = pickle.load(open('./your_model.pkl', 'rb'))
-    result = model.predict(x)
-    if result[0]==0:
-        return render_template('index.html', text = "JOY")
-    elif result[0]==1:
-        return render_template('index.html', text = "NETURAL")
-    elif result[0]==2:
-        return render_template('index.html', text = "OPTIMISM")
-    else:
-        return render_template('index.html', text = "UPSET")
-    
-
+    if request.method == 'POST':
+        text = request.form.get('text')
+        text = text.lower()
+        text = convert_emojis(text)
+        text = tokenize(text)
+        text = remove_punct(text)
+        text = whites(text)
+        text = re_stop(text)
+        text = remove_num(text)
+        text = remove_roman(text)
+        text = remove_redun(text)
+        text = stemm(text)
+        text = ' '.join(text)
+        text = [text]
+        tfidf_filename = "./tfidf_vectorizer.pkl"
+        loaded_tfidf = joblib.load(tfidf_filename)
+        x = loaded_tfidf.transform(text).toarray()
+        model = pickle.load(open('./your_model.pkl', 'rb'))
+        result = model.predict(x)
+        res = ""
+        if result[0]==0:
+            res = "JOY"
+        elif result[0]==1:
+            res = "NETURAL"
+        elif result[0]==2:
+            res = "OPTIMISM"
+        else:
+            res = "UPSET"
+    return render_template('index.html', text = res)
 
 
 if __name__ == '__main__':
