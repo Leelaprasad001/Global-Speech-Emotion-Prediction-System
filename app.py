@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, url_for
+import nltk
+nltk.download('punkt')
 from emot.emo_unicode import UNICODE_EMOJI
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-import nltk
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pickle
