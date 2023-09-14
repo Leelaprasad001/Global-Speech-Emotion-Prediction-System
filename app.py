@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, url_for
 import nltk
-nltk.download('punkt')
+nltk.download()
 from emot.emo_unicode import UNICODE_EMOJI
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
