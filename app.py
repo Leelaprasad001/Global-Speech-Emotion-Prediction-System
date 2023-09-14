@@ -66,7 +66,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/submit_text', methods=['POST'])
+@app.route('/', methods=['GET','POST'])
 def submit_text():
     text = request.form.get('text')
     text = text.lower()
