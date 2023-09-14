@@ -98,7 +98,7 @@ def submit_text():
             res = "OPTIMISM"
         else:
             res = "UPSET"
-    return render_template('index.html', text = res)
+    return render_template('result.html', text = res)
 
 
 if __name__ == '__main__':
